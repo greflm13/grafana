@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "grafana-monitoring"
+version = "1.0.0"
+description = "Grafana Monitoring"
+readme = "README.md"
+requires-python = ">=3.12"
+
+license = "AGPL-3.0-or-later"
+
+authors = [{ name = "Flo Greistorfer" }]
+
+dependencies = ["influxdb-client~=1.50.0"]
+
+[project.optional-dependencies]
+dev = ["ruff"]
+
+[tool.setuptools]
+packages = []

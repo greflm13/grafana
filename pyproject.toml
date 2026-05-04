@@ -13,7 +13,7 @@ license = "AGPL-3.0-or-later"
 
 authors = [{ name = "Flo Greistorfer" }]
 
-dependencies = ["influxdb-client~=1.50.0"]
+dependencies = ["apacheconfig~=0.3.2", "Requests~=2.33.1"]
 
 [project.optional-dependencies]
 dev = ["ruff"]

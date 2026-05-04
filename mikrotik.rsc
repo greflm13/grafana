@@ -131,9 +131,9 @@
 
 		:log info message="ITU: Item: $itemID, Pushing metrics."
 		
-		:set postRequestPayload ( "mikrotik_monitoring,interface=$currentItemName,instance=$deviceIdentity traffic_rx=$currentItemNowRx" . "\n" . "mikrotik_monitoring,interface=$currentItemName,instance=$deviceIdentity traffic_tx=$currentItemNowTx" )
-		/tool fetch url="http://example.com:8086/api/v2/write?org=ORGANIZATION&bucket=BUCKET&precision=ns" mode="https" keep-result="no" check-certificate="no" http-method="post" http-data="$postRequestPayload" http-header-field="Authorization: Token YOUR-TOKEN,Content-Type: text/plain,charset=utf-8"
-
+		:set postRequestPayload ( "mikrotik_monitoring,interface=$currentItemName,instance=$deviceIdentity traffic_rx=${currentItemNowRx}i" . "\n" . "mikrotik_monitoring,interface=$currentItemName,instance=$deviceIdentity traffic_tx=${currentItemNowTx}i" )
+		/tool fetch url="http://example.com:8086/api/v2/write?org=ORGANIZATION&bucket=BUCKET&precision=ns" mode="http" keep-result="yes" http-method="post" http-data="$postRequestPayload" http-header-field="Authorization: Token YOUR-TOKEN","Content-Type: text/plain; charset=utf-8"
+		:log info ("InfluxDB response: " . [/file get fetch-result contents])
 	}
 
 	:log info message="ITU: Finished processing interface number='$itemID'"

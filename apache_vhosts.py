@@ -5,13 +5,14 @@ import urllib3
 
 import requests
 
+from typing import Generator
+
 from apacheconfig import make_loader
 
 urllib3.disable_warnings()
 
 
-def get_vhosts(path: str = "/etc/apache2/sites-enabled") -> list[dict[str, str | None]]:
-    lsit = []
+def get_vhosts(path: str = "/etc/apache2/sites-enabled") -> Generator[dict[str, str | None]]:
     for file in os.listdir(path):
         with make_loader() as loader:
             data = loader.load(os.path.join(path, file))
@@ -20,13 +21,10 @@ def get_vhosts(path: str = "/etc/apache2/sites-enabled") -> list[dict[str, str |
             if "IfModule" in data:
                 vhosts = data["IfModule"]["mod_ssl.c"].get("VirtualHost", {})
                 for vhost in vhosts:
-                    lsit.append(
-                        {
-                            "url": vhost["*:443"].get("ServerName", None),
-                            "proxy": vhost["*:443"].get("ProxyPass", None),
-                        }
-                    )
-    return lsit
+                    yield {
+                        "url": vhost["*:443"].get("ServerName", None),
+                        "proxy": vhost["*:443"].get("ProxyPass", None),
+                    }
 
 
 def try_host(vhost: dict[str, str | None]) -> dict[str, str | int]:

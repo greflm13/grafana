@@ -13,7 +13,7 @@ license = "AGPL-3.0-or-later"
 
 authors = [{ name = "Flo Greistorfer" }]
 
-dependencies = ["apacheconfig~=0.3.2", "Requests~=2.33.1"]
+dependencies = ["apacheconfig~=0.3.2", "Requests~=2.33.1", "qbittorrent-api==2024.12.71"]
 
 [project.optional-dependencies]
 dev = ["ruff"]

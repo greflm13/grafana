@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 import os
-import json
+import sys
 import urllib3
 
 import requests
 
+from time import sleep
 from typing import Generator
 
 from apacheconfig import make_loader
@@ -12,7 +13,7 @@ from apacheconfig import make_loader
 urllib3.disable_warnings()
 
 
-def get_vhosts(path: str = "/etc/apache2/sites-enabled") -> Generator[dict[str, str | None]]:
+def get_vhosts(path: str = "/etc/apache2/sites-enabled") -> Generator[dict[str, str | None], str, None]:
     for file in os.listdir(path):
         with make_loader() as loader:
             data = loader.load(os.path.join(path, file))
@@ -31,7 +32,9 @@ def try_host(vhost: dict[str, str | None]) -> dict[str, str | int]:
     ret = {}
     assert isinstance(vhost["url"], str)
     try:
-        req = requests.get("https://" + vhost["url"], verify=False, allow_redirects=True)
+        req = requests.get(
+            "https://" + vhost["url"], verify=False, allow_redirects=True, proxies={"https": "https://195.192.209.130"}
+        )
         ret = {"url": vhost["url"], "status": req.status_code, "proxy": -1}
     except requests.ConnectionError as e:
         if e.response:
@@ -51,18 +54,19 @@ def try_host(vhost: dict[str, str | None]) -> dict[str, str | int]:
 
 
 def main() -> None:
-    metrics = []
-    vhosts = get_vhosts()
-    for vhost in vhosts:
-        host = try_host(vhost)
-        data = {
-            "vhost": str(host["url"]),
-            "status": int(host["status"]),
-            "proxy": int(host["proxy"]),
-        }
-        metrics.append(data)
+    while True:
+        vhosts = get_vhosts()
+        for vhost in vhosts:
+            try:
+                host = try_host(vhost)
+                print(f"vhosts,vhost={host['url']} status={host['status']}i,proxy={host['proxy']}i")
+                sys.stdout.flush()
 
-    print(json.dumps({"measurement": "vhosts", "data": metrics}))
+            except Exception as e:
+                print(f'vhosts,vhost={vhost['url']} error="{e}"')
+                sys.stdout.flush()
+
+        sleep(30)
 
 
 if __name__ == "__main__":

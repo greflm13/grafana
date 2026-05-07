@@ -9,11 +9,14 @@ import qbittorrentapi
 def main():
     while True:
         client = qbittorrentapi.Client(
-            host="http://100.0.0.200", port=30024, username="admin", password="g74775", VERIFY_WEBUI_CERTIFICATE=False
+            host="", port=0, username="", password="", VERIFY_WEBUI_CERTIFICATE=False
         )
         client.auth_log_in()
 
         torrentlist = client.torrents.info(sort="added_on")
+        count = client.torrents.count()
+        print(f"torrents count={count}i")
+        sys.stdout.flush()
 
         for torrent in torrentlist:
             print(
@@ -31,8 +34,8 @@ def main():
                 + f",progress={torrent.progress}"
                 + f",ratio={torrent.ratio}"
                 + f",seeding_time={torrent.seeding_time}i"
-                + f',state="{torrent.state}'
-                + f'",time_active={torrent.time_active}i'
+                + f',state="{torrent.state}"'
+                + f",time_active={torrent.time_active}i"
                 + f",uploaded={torrent.uploaded}"
             )
             sys.stdout.flush()

@@ -6,7 +6,7 @@ import urllib3
 import requests
 
 from time import sleep
-from typing import Generator
+from typing import Generator, NoReturn
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from apacheconfig import make_loader
@@ -61,7 +61,7 @@ def try_host(vhost: dict[str, str | None]) -> dict[str, str | int]:
     return {"url": vhost["url"], "status": status, "proxy": proxy_status}
 
 
-def main() -> None:
+def main() -> NoReturn:
     while True:
         vhosts = list(get_vhosts())
 

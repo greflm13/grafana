@@ -2,11 +2,12 @@
 import sys
 
 from time import sleep
+from typing import NoReturn
 
 import qbittorrentapi
 
 
-def main():
+def main() -> NoReturn:
     while True:
         client = qbittorrentapi.Client(
             host="", port=0, username="", password="", VERIFY_WEBUI_CERTIFICATE=False

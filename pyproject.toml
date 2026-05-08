@@ -1,22 +1,22 @@
 [build-system]
-requires = ["setuptools>=61", "wheel"]
-build-backend = "setuptools.build_meta"
+    build-backend = "setuptools.build_meta"
+    requires = ["setuptools>=61", "wheel"]
 
 [project]
-name = "grafana-monitoring"
-version = "1.0.0"
-description = "Grafana Monitoring"
-readme = "README.md"
-requires-python = ">=3.12"
+    description = "Grafana Monitoring"
+    name = "grafana-monitoring"
+    readme = "README.md"
+    requires-python = ">=3.12"
+    version = "1.0.0"
 
-license = "AGPL-3.0-or-later"
+    license = "AGPL-3.0-or-later"
 
-authors = [{ name = "Flo Greistorfer" }]
+    authors = [{ name = "Flo Greistorfer" }]
 
-dependencies = ["apacheconfig~=0.3.2", "Requests~=2.33.1", "qbittorrent-api==2024.12.71"]
+    dependencies = ["Requests~=2.33.1", "apacheconfig~=0.3.2", "qbittorrent-api==2024.12.71"]
 
-[project.optional-dependencies]
-dev = ["ruff"]
+    [project.optional-dependencies]
+        dev = ["ruff"]
 
 [tool.setuptools]
-packages = []
+    packages = []

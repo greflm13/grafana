@@ -1,0 +1,23 @@
+{
+    "folders": [
+        {
+            "path": ".",
+            "name": "Grafana"
+        }
+    ],
+    "settings": {
+        "files.associations": {
+            "*.conf": "toml"
+        },
+        "evenBetterToml.formatter.arrayAutoCollapse": true,
+        "evenBetterToml.formatter.allowedBlankLines": 2,
+        "evenBetterToml.formatter.arrayAutoExpand": false,
+        "evenBetterToml.formatter.columnWidth": 140,
+        "evenBetterToml.formatter.indentEntries": true,
+        "evenBetterToml.formatter.indentTables": true,
+        "evenBetterToml.formatter.reorderArrays": true,
+        "evenBetterToml.formatter.reorderInlineTables": false,
+        "evenBetterToml.formatter.reorderKeys": true,
+        "evenBetterToml.taplo.configFile.path": ".taplo.toml"
+    }
+}

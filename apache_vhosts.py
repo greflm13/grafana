@@ -47,7 +47,7 @@ def try_host(vhost: dict[str, str | None]) -> dict[str, str | int]:
 
     if vhost["proxy"]:
         try:
-            proxy_url = vhost["proxy"].split()[1]
+            proxy_url = vhost["proxy"].split()[1].split()[0]
             req = requests.get(
                 proxy_url,
                 verify=False,

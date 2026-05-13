@@ -41,7 +41,7 @@ def try_host(vhost: dict[str, str | None]) -> dict[str, str | int]:
         )
         status = req.status_code
     except requests.RequestException as e:
-        status = e.response.status_code if e.response else 600
+        status = getattr(e.response, "status_code", 600)
 
     proxy_status = -1
 
@@ -51,12 +51,12 @@ def try_host(vhost: dict[str, str | None]) -> dict[str, str | int]:
             req = requests.get(
                 proxy_url,
                 verify=False,
-                allow_redirects=True,
+                allow_redirects=False,
                 timeout=10,
             )
             proxy_status = req.status_code
         except requests.RequestException as e:
-            proxy_status = e.response.status_code if e.response else 600
+            proxy_status = getattr(e.response, "status_code", 600)
 
     return {"url": vhost["url"], "status": status, "proxy": proxy_status}
 

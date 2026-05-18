@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
+import sys
 import json
 import time
 import urllib.parse
 import urllib.request
+
+from typing import NoReturn
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 URL = "http://localhost:7125/printer/objects/query"
 
@@ -40,7 +44,7 @@ def format_field_value(v):
     return f'"{v}"'
 
 
-def flatten_fields(prefix, obj, out):
+def flatten_fields(prefix: str, obj: dict, out: dict) -> None:
     for k, v in obj.items():
         key = f"{prefix}_{k}" if prefix else k
         if isinstance(v, dict):
@@ -53,9 +57,8 @@ def flatten_fields(prefix, obj, out):
                 out[key] = fv
 
 
-def fetch_metrics():
-    query = "&".join(urllib.parse.quote(p) for p in PARAMS)
-    query_url = f"{URL}?{query}"
+def fetch_metric(param: str):
+    query_url = f"{URL}?{urllib.parse.quote(param)}"
 
     with urllib.request.urlopen(query_url) as response:
         data = json.loads(response.read().decode())
@@ -63,21 +66,37 @@ def fetch_metrics():
     status = data.get("result", {}).get("status", {})
     timestamp = int(time.time() * 1_000_000_000)
 
-    for obj_name, values in status.items():
-        measurement = f"klipper_{obj_name.replace(' ', '_')}"
-        tags = f"object={obj_name.replace(' ', '_')}"
+    values = status[param]
+    measurement = f"klipper_{param.replace(' ', '_')}"
+    tags = f"object={param.replace(' ', '_')}"
 
-        fields = {}
-        flatten_fields("", values, fields)
+    fields = {}
+    flatten_fields("", values, fields)
 
-        if not fields:
-            continue
+    if not fields:
+        return
 
-        field_str = ",".join(f"{k}={v}" for k, v in fields.items())
-        print(f"{measurement},{tags} {field_str} {timestamp}")
+    field_str = ",".join(f"{k}={v}" for k, v in fields.items())
+    return measurement, tags, field_str, timestamp
+
+
+def main() -> NoReturn:
+    while True:
+        with ThreadPoolExecutor(max_workers=20) as executor:
+            futures = {executor.submit(fetch_metric, v): v for v in PARAMS}
+
+            for future in as_completed(futures):
+                try:
+                    metric = future.result()
+                    if not metric:
+                        raise Exception
+                    print(f"{metric[0]},{metric[1]} {metric[2]} {metric[3]}")
+                    sys.stdout.flush()
+                except Exception:
+                    pass
+
+        time.sleep(5)
 
 
 if __name__ == "__main__":
-    while True:
-        fetch_metrics()
-        time.sleep(10)
+    main()

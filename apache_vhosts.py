@@ -73,10 +73,10 @@ def main() -> NoReturn:
                 try:
                     host = future.result()
                     print(f"vhosts,vhost={host['url']} status={host['status']}i,proxy={host['proxy']}i")
+                    sys.stdout.flush()
                 except Exception as e:
                     print(f'vhosts,vhost={vhost["url"]} error="{e}"')
-
-                sys.stdout.flush()
+                    sys.stdout.flush()
 
         sleep(30)
 

@@ -25,6 +25,10 @@ PARAMS = [
     "fan_generic cooling_fan",
     "controller_fan board_fan",
     "filament_switch_sensor fila",
+    "heater_generic heater_box1",
+    "box_heater_fan heater_fan_a_box1",
+    "box_heater_fan heater_fan_b_box1",
+    "controller_fan board_fan_box1",
 ]
 
 PRINTER_NAME = "klipper"

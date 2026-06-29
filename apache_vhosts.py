@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 import os
 import sys
-import urllib3
+from collections.abc import Generator
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from time import sleep
+from typing import NoReturn
 
 import requests
-
-from time import sleep
-from typing import Generator, NoReturn
-from concurrent.futures import ThreadPoolExecutor, as_completed
-
+import urllib3
 from apacheconfig import make_loader
 
 urllib3.disable_warnings()

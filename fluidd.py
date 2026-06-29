@@ -29,6 +29,18 @@ PARAMS = [
     "box_heater_fan heater_fan_a_box1",
     "box_heater_fan heater_fan_b_box1",
     "controller_fan board_fan_box1",
+    "heater_generic heater_box2",
+    "box_heater_fan heater_fan_a_box2",
+    "box_heater_fan heater_fan_b_box2",
+    "controller_fan board_fan_box2",
+    "heater_generic heater_box3",
+    "box_heater_fan heater_fan_a_box3",
+    "box_heater_fan heater_fan_b_box3",
+    "controller_fan board_fan_box3",
+    "heater_generic heater_box4",
+    "box_heater_fan heater_fan_a_box4",
+    "box_heater_fan heater_fan_b_box4",
+    "controller_fan board_fan_box4",
 ]
 
 PRINTER_NAME = "klipper"

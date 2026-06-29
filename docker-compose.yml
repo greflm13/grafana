@@ -1,0 +1,32 @@
+services:
+  telegraf:
+    image: telegraf:latest
+    restart: unless-stopped
+    network_mode: host
+    pid: host
+
+    volumes:
+      - /mnt/.ix-apps/app_mounts/telegraf/config:/etc/telegraf
+      - /mnt/.ix-apps/app_mounts/telegraf/buffer:/tmp/telegraf
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /etc:/host/etc:ro
+      - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket:ro
+      - /sbin/zfs:/sbin/zfs:ro
+      - /sbin/zpool:/sbin/zpool:ro
+      - /usr/lib/zfs-linux:/host/usr/lib/zfs-linux:ro
+      - /lib:/host/lib:ro
+      - /lib64:/host/lib64:ro
+      - /usr/lib:/host/usr/lib:ro
+      - /lib/x86_64-linux-gnu:/lib/x86_64-linux-gnu:ro
+      - /usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:ro
+      - /dev:/dev:ro
+      - /run/udev:/run/udev:ro
+
+    environment:
+      - HOST_PROC=/host/proc
+      - HOST_SYS=/host/sys
+      - HOST_ETC=/host/etc
+      - LD_LIBRARY_PATH=/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu
+
+    privileged: true

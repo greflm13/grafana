@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-import sys
 import json
+import sys
 import time
 import urllib.parse
 import urllib.request
-
-from typing import NoReturn
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from typing import NoReturn
 
 URL = "http://localhost:7125/printer/objects/query"
 

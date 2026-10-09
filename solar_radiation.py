@@ -15,7 +15,7 @@ def get_data():
             if req.status_code in [200]:
                 return res
 
-        except:
+        except requests.exceptions.RequestException:
             ...
         time.sleep(60)
 

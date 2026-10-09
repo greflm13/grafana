@@ -21,9 +21,8 @@ def main() -> None:
 
     for idx, timestamp in enumerate(data["minutely_15"]["time"]):
         value = data["minutely_15"]["global_tilted_irradiance_instant"][idx]
-        print(
-            f"solar_radiation,latitude=47.01778,longitude=15.441042 value={value} {int(datetime.datetime.strptime(timestamp, '%Y-%m-%dT%H:%M').timestamp()) * 1000000000}"
-        )
+        ts = datetime.datetime.fromisoformat(timestamp).replace(tzinfo=datetime.UTC).timestamp()
+        print(f"solar_radiation,latitude=47.01778,longitude=15.441042 value={value} {int(ts) * 1_000_000_000}")
 
 
 if __name__ == "__main__":
